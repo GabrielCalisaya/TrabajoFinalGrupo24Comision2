@@ -66,3 +66,15 @@ export default App;
 //  una lista de productos de una API externa y almacenarlos en el estado global de Redux.
 //  También maneja los estados de carga y error.
 //Se crea un componente llamado SpinnerLoad que muestra u oculta un spinner (indicador de carga)  basado en una prop open.
+
+
+// Explicacion de favoritos
+// Se utiliza Redux para guardar en el estado global los IDs de los productos marcados como favoritos.
+// Al hacer clic en el ícono de corazón, se agrega o quita el ID del producto en la lista de favoritos.
+// La página de Favoritos filtra y muestra solo los productos cuyos IDs están en la lista de favoritos.
+
+// Explicacion de DetalleProducto
+// La página de detalle muestra información completa de un producto específico.
+// Al hacer clic en "Ver más detalles", se navega a la página de detalle usando el ID del producto en la URL.
+// En la página de detalle, se busca el producto por su ID en el estado global y se muestra toda su información.
+// Desde esta página también se puede agregar o quitar el producto de favoritos usando el mismo botón de corazón.
