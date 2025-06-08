@@ -18,8 +18,10 @@ import NoEncontrada from './pages/PaginaNoEncontrada.jsx'
 //Importación de los componentes de layout globales que se renderizarán en todas las páginasimport 
 import AppNavbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
+import { useTraerProductos } from './hooks/useTraerProductos.jsx'
 
 function App() {
+  
   return (
     <BrowserRouter>
     {/* Navbar se renderizará fuera de "Routes" para que aparezca en todas las páginas */}
@@ -58,3 +60,9 @@ function App() {
 }
 
 export default App;
+//el provider envuelve la aplicacion desde el main. luego en productossSlice se crea la logica para manejar el estado global
+// y en el store se crea el esstado inicial de los productos 
+//Dentro de hooks se define un hook personalizado de React llamado useTraerProductos. Su propósito es encapsular la lógica para obtener
+//  una lista de productos de una API externa y almacenarlos en el estado global de Redux.
+//  También maneja los estados de carga y error.
+//Se crea un componente llamado SpinnerLoad que muestra u oculta un spinner (indicador de carga)  basado en una prop open.
