@@ -3,7 +3,6 @@ import { Row, Col, Container, Alert } from 'react-bootstrap';
 import ProductoCarta from '../components/ProductosCarta';
 
 function Favoritos() {
-  
   // Obtenemos los favoritos y productos del estado global
   const favoritos = useSelector(state => state.favoritos);
   const productos = useSelector(state => state.products);
@@ -18,13 +17,11 @@ function Favoritos() {
         <span className="badge bg-danger fs-6">{productosFavoritos.length}</span>
       </div>
       {productosFavoritos.length === 0 ? (
-
         // Si no hay productos favoritos, mostramos un mensaje
         <Alert variant="info" className="text-center">
           <strong>No tienes productos favoritos.</strong>
         </Alert>
       ) : (
-
         // Si hay productos favoritos, los mostramos en una cuadrícula
         <Row xs={1} sm={2} md={3} lg={4} className="g-4">
           {productosFavoritos.map(producto => (

@@ -1,17 +1,14 @@
-// src/pages/Inicio.jsx
-
 import { useSelector } from "react-redux";
 import ProductoCarta from "../components/ProductosCarta";
 import { useTraerProductos } from "../hooks/useTraerProductos";
 import { SpinnerLoad } from "../components/SpinnerLoad";
-import { Button, Container, Row, Col } from 'react-bootstrap'; 
+import { Button, Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { selectActiveProducts } from '../store/productosSlice';
 
 function Inicio() {
     const { loading, error } = useTraerProductos();
     const products = useSelector(selectActiveProducts);
-
     const navigate = useNavigate();
 
     const handleCrearProducto = () => {
@@ -25,6 +22,13 @@ function Inicio() {
 
     return (
         <Container className="mt-4 mb-5">
+            <div className="text-center mb-4"> {/* Contenedor para centrar la imagen */}
+                <img
+                    src="/src/assets/Black White Minimalist Initials Monogram Jewelry Logo.png"
+                    alt="Logo G24"
+                    style={{ maxWidth: '250px', height: 'auto', display: 'block', margin: '0 auto' }} // Estilos inline para control de tamaño y centrado más robusto
+                />
+            </div>
             <h2 className="text-center mb-4">Página de Inicio de Productos</h2>
             <p className="text-center mb-4">Aquí se listarán todas las tarjetas de productos.</p>
 

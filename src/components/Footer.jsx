@@ -1,27 +1,24 @@
 import { Container } from 'react-bootstrap';
 
-function Footer(){
-    return(
-        // Utiliza la etiqueta 'footer' de HTML5 para la semántica.
-        // 'bg-dark', 'text-white', 'py-3' son clases de Bootstrap para el fondo, color de texto y padding vertical.
-        // 'fixed-bottom' posiciona el footer en la parte inferior de la ventana visible.
-        <footer className='bg-dark text-white py-3 fixed-bottom'>
-            <Container>
+function Footer() {
+    return (
+        <footer className='bg-dark text-white py-3 mt-auto'>
+            <Container className='text-center'>
                 <p className='mb-1'>Trabajo Final PV 2025</p>
                 <p className='mb-1'>Grupo 24</p>
                 {/* <p className='mb-0'>
                     Integrantes:
-                <br />
+                    <br />
                     Juan Carrizo
-                <br />
+                    <br />
                     Gabriel Calisaya
-                <br />
+                    <br />
                     Fernando Romero
-                <br />
+                    <br />
                     Natali Suárez
-                <br />
-                    Juan Baca Wayar */}
-                {/* </p> */}
+                    <br />
+                    Juan Baca Wayar
+                </p> */}
             </Container>
         </footer>
     );

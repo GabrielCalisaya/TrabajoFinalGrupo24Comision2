@@ -1,9 +1,8 @@
-// src/components/ProductosCarta.jsx
-import React from 'react';
-import { Card, Button } from 'react-bootstrap';
+import { useState } from 'react';
+import { Card, Button, Modal} from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { agregarFavorito, quitarFavorito } from '../store/favoritosSlice'; // Asegúrate de tener este slice
+import { agregarFavorito, quitarFavorito } from '../store/favoritosSlice';
 import { removeProduct } from '../store/productosSlice'; // Importa la acción para eliminar
 import { FaHeart, FaRegHeart, FaTrash } from 'react-icons/fa'; // Iconos para favorito y eliminar
 
@@ -11,8 +10,9 @@ function ProductoCarta({ producto }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const favoritos = useSelector(state => state.favoritos); // Obtiene IDs de favoritos
-
     const esFavorito = favoritos.includes(producto.id);
+
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     const handleVerDetalles = () => {
         navigate(`/detalle/${producto.id}`);
@@ -26,16 +26,22 @@ function ProductoCarta({ producto }) {
             dispatch(agregarFavorito(producto.id));
         }
     };
-
-    const handleEliminarProducto = (e) => {
-        e.stopPropagation(); // Evita que el clic en el botón de eliminar active el detalle
-        // Despacha la acción removeProduct con el ID del producto
-        dispatch(removeProduct(producto.id));
-        alert('Producto eliminadisimo.');
+    const handleShowDeleteModal = (e) => {
+        e.stopPropagation(); // Evita el clic en el detalle
+        setShowDeleteModal(true);
     };
 
-    // No renderiza la tarjeta si el producto está en estado: false (borrado lógico)
-    if (producto.estado === false) {
+    // Función para cerrar el modal de confirmación
+    const handleCloseDeleteModal = () => setShowDeleteModal(false);
+
+    // Funcion que se ejecuta cuando el usuario confirma la eliminacion
+    const handleConfirmDelete = () => {
+        dispatch(removeProduct({ id: producto.id }));
+        handleCloseDeleteModal(); // Cierra el modal después de despachar la acción
+        alert('Producto eliminado correctamente.'); 
+    };
+
+    if (producto.estado === 'inactivo') {
         return null;
     }
 
@@ -57,7 +63,6 @@ function ProductoCarta({ producto }) {
                 <Card.Text className="mb-2" style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
                     Precio: ${producto.price?.toFixed(2)}
                 </Card.Text>
-
                 <div className="d-flex justify-content-between align-items-center mt-auto">
                     <Button variant="primary" onClick={handleVerDetalles}>
                         Ver detalles
@@ -72,7 +77,7 @@ function ProductoCarta({ producto }) {
                     </Button>
                     <Button
                         variant="danger"
-                        onClick={handleEliminarProducto}
+                        onClick={handleShowDeleteModal}
                         style={{ fontSize: '1.2rem', padding: '0.5rem' }}
                         aria-label="Eliminar Producto"
                     >
@@ -80,6 +85,22 @@ function ProductoCarta({ producto }) {
                     </Button>
                 </div>
             </Card.Body>
+            <Modal show={showDeleteModal} onHide={handleCloseDeleteModal} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirmar Eliminación</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    ¿Estas seguro de que deseas deshabilitar el producto **"{producto.title}"**?.
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseDeleteModal}>
+                        Cancelar
+                    </Button>
+                    <Button variant="danger" onClick={handleConfirmDelete}>
+                        Eliminar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </Card>
     );
 }

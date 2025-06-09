@@ -1,8 +1,11 @@
 // Importación de hooks de React Router DOM para acceder a parámetros de URL y para la navegación
 import { useParams, useNavigate } from 'react-router-dom';
+
 // Importación de hooks de Redux para acceder al estado global y despachar acciones
 import { useSelector, useDispatch } from 'react-redux';
+
 import { Container, Card, Button, Row, Col, Badge } from 'react-bootstrap';
+
 // Importación de las acciones para agregar y quitar productos de favoritos
 import { agregarFavorito, quitarFavorito } from '../store/favoritosSlice';
 
@@ -66,7 +69,8 @@ function DetalleProducto() {
                                     <FaHeart />
                                 </Button>
                             </div>
-                            <Card.Text>
+                            {/*puse "as='div'" para que el texto no se vea como un párrafo y se pueda usar h5 (tiraba un error que no afectaba el funcionamiento pero si figuraba en consola)*/}
+                            <Card.Text as="div">
                                 <h5>
                                     <Badge bg="success" className="me-2">
                                         ${producto.price?.toFixed(2)}
@@ -85,7 +89,7 @@ function DetalleProducto() {
                                     <p className="mt-2 text-dark">{producto.description}</p>
                                 </div>
                             </Card.Text>
-                            {/* Botón para navegar al formulario de edición del producto */}
+                            {/* Boton para navegar al formulario de edición del producto */}
                             <div className="d-grid gap-2">
                                 <Button
                                     variant="info"

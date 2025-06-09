@@ -1,7 +1,7 @@
-//importacion necesaria para crear el store de Redux
+// Importación necesaria para crear el store de Redux
 import { configureStore } from "@reduxjs/toolkit";
 
-// importacion de los reduces de productos y favoritos
+// Importación de los reducers de productos y favoritos
 import productsReducer from "./productosSlice";
 import favoritosReducer from "./favoritosSlice";
 
@@ -11,6 +11,4 @@ export const store = configureStore({
         products: productsReducer,
         favoritos: favoritosReducer,
     },
-    
-    
-})
+});

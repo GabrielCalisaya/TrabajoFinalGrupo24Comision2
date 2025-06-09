@@ -1,15 +1,13 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProduct, updateProduct } from '../store/productosSlice';
-import { Container, Form, Button, Row, Col, Alert } from 'react-bootstrap';
+import { Container, Form, Button, Row, Col } from 'react-bootstrap';
 
 function FormularioProducto() {
     const { id } = useParams();
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
     const products = useSelector(state => state.products);
 
     const [formData, setFormData] = useState({
@@ -115,13 +113,14 @@ function FormularioProducto() {
             // Modo edición: despacha la acción updateProduct
             dispatch(updateProduct({ ...formData, id: Number(id) }));
             alert('Producto actualizado exitosamente estimado!');
+            navigate(`/detalle/${id}`); // Redirige al detalle del producto recien creado o editado
         } else {
             // Modo creación: genera un nuevo ID y despacha addProduct
             const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
             dispatch(addProduct({ ...formData, id: newId }));
             alert('Producto añadido Correctamente estimado!');
+            navigate(`/detalle/${newId}`); // Redirige al detalle del producto recien creado o editado
         }
-        navigate('/');
     };
 
     const formTitle = id ? 'Editar Producto' : 'Añadir Nuevo Producto';

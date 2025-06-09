@@ -1,5 +1,3 @@
-
-
 function AcercaDe() {
   return (
     <div>
@@ -8,5 +6,7 @@ function AcercaDe() {
     </div>
   );
 }
+
+//falta terminar el about.
 
 export default AcercaDe;
