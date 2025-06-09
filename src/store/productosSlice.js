@@ -1,6 +1,4 @@
-// src/store/productosSlice.js
-
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createSelector } from "@reduxjs/toolkit";
 
 export const productsSlice = createSlice({
     name: "products",
@@ -33,10 +31,12 @@ export const productsSlice = createSlice({
     }
 });
 
-// Exporta las acciones (funciones para despachar)
 export const { setProducts, addProduct, removeProduct, updateProduct, restoreProduct } = productsSlice.actions;
 
-
-export const selectActiveProducts = (state) => state.products.filter(product => product.estado !== 'inactivo');
+const selectProductsState = (state) => state.products;
+export const selectActiveProducts = createSelector(
+    [selectProductsState],
+    (products) => products.filter(product => product.estado !== 'inactivo')
+);
 
 export default productsSlice.reducer;
