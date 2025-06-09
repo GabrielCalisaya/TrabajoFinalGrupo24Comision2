@@ -1,26 +1,42 @@
+// src/store/productosSlice.js
+
 import { createSlice } from "@reduxjs/toolkit";
 
-export const productsSlice = createSlice({ //Define y exporta una constante productsSlice, que es el resultado de llamar a createSlice.
-    name: "products", 
-    initialState: [],//Define el estado inicial para este slice de Redux. El estado inicial es un array vacío, lo que sugiere que este slice gestionará una colección de productos.
-    reducers: { //Esta propiedad es un objeto que contiene funciones "reducer" individuales
-        setProducts: (_, action) => {
-            return action.payload;
+export const productsSlice = createSlice({
+    name: "products",
+    initialState: [],
+    reducers: {
+        setProducts: (state, action) => {
+            return action.payload.map(p => ({ ...p, estado: p.estado || 'activo' }));
         },
         addProduct: (state, action) => {
-            state.push(action.payload);
+            state.push({ ...action.payload, estado: 'activo' });
         },
         removeProduct: (state, action) => {
-            return state.filter(product => product.id !== action.payload.id);
+            const index = state.findIndex(product => product.id === action.payload.id);
+            if (index !== -1) {
+                state[index].estado = 'inactivo';
+            }
         },
         updateProduct: (state, action) => {
             const index = state.findIndex(product => product.id === action.payload.id);
             if (index !== -1) {
-                state[index] = action.payload;
+                state[index] = { ...action.payload, estado: state[index].estado };
+            }
+        },
+        restoreProduct: (state, action) => {
+            const index = state.findIndex(product => product.id === action.payload.id);
+            if (index !== -1) {
+                state[index].estado = 'activo';
             }
         }
     }
 });
 
-export const { setProducts, addProduct, removeProduct, updateProduct } = productsSlice.actions;
+// Exporta las acciones (funciones para despachar)
+export const { setProducts, addProduct, removeProduct, updateProduct, restoreProduct } = productsSlice.actions;
+
+
+export const selectActiveProducts = (state) => state.products.filter(product => product.estado !== 'inactivo');
+
 export default productsSlice.reducer;
