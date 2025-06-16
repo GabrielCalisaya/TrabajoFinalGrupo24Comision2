@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProduct, updateProduct } from '../store/productosSlice';
-import { Container, Form, Button, Row, Col, Alert } from 'react-bootstrap';
+import { Container, Form, Button, Row, Col } from 'react-bootstrap';
 
 function FormularioProducto() {
     const { id } = useParams();
-    const [mensaje, setMensaje] = useState('');
-    const [tipoMensaje, setTipoMensaje] = useState('success')
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const products = useSelector(state => state.products);
 
     const [formData, setFormData] = useState({
@@ -106,31 +105,27 @@ function FormularioProducto() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-    
+
         if (!validateForm()) {
             return;
         }
-    
+
+        setIsSubmitting(true); // Deshabilita el botón
+
         if (id) {
-            // Modo edicion: despacha la acción updateProduct
+            // Modo edición: despacha la acción updateProduct
             dispatch(updateProduct({ ...formData, id: Number(id) }));
-            setMensaje('¡Producto actualizado exitosamente!');
-            setTipoMensaje('success');
-            setTimeout(() => {
-                setMensaje('');
-                navigate(`/detalle/${id}`); // Redirige al detalle del producto recien editado
-            }, 1800);
+            alert('Producto actualizado exitosamente!');
+            navigate(`/detalle/${id}`); // Redirige al detalle del producto recien creado o editado
         } else {
-            // Modo creacion: genera un nuevo ID y despacha addProduct
+            // Modo creación: genera un nuevo ID y despacha addProduct
             const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
             dispatch(addProduct({ ...formData, id: newId }));
-            setMensaje('¡Producto añadido correctamente!');
-            setTipoMensaje('success');
-            setTimeout(() => {
-                setMensaje('');
-                navigate(`/detalle/${newId}`); // Redirige al detalle del producto recien creado
-            }, 1800);
+            alert('Producto añadido Correctamente!');
+            navigate(`/detalle/${newId}`); // Redirige al detalle del producto recien creado o editado
         }
+
+        setIsSubmitting(false); // Habilita el botón después de la acción
     };
 
     const formTitle = id ? 'Editar Producto' : 'Añadir Nuevo Producto';
@@ -140,12 +135,6 @@ function FormularioProducto() {
             <Row className="justify-content-center">
                 <Col xs={12} md={8} lg={7}>
                     <h2 className="text-center mb-4">{formTitle}</h2>
-                    {/* ALERTA BONITA AQUÍ */}
-                    {mensaje && (
-                        <Alert variant={tipoMensaje} className="text-center">
-                            {mensaje}
-                        </Alert>
-                    )}
                     <Form onSubmit={handleSubmit} className="p-4 border rounded shadow-sm">
                         <Form.Group className="mb-3" controlId="formTitle">
                             <Form.Label>Nombre del Producto</Form.Label>
@@ -237,8 +226,13 @@ function FormularioProducto() {
                                 {errors.count}
                             </Form.Control.Feedback>
                         </Form.Group>
-                        <Button variant="success" type="submit" className="w-100 mt-4">
-                            {id ? 'Guardar Cambios' : 'Añadir Producto'}
+                        <Button
+                            variant="success"
+                            type="submit"
+                            className="w-100 mt-4"
+                            disabled={isSubmitting}
+                        >
+                            {isSubmitting ? 'Guardando...' : (id ? 'Guardar Cambios' : 'Añadir Producto')}
                         </Button>
                     </Form>
                 </Col>
