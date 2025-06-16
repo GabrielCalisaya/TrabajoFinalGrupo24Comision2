@@ -2,19 +2,18 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from '../store/userSlice';
+import { Container, Row, Col, Form, Button, Card, Alert, InputGroup } from 'react-bootstrap';
+import { FaUser, FaLock } from 'react-icons/fa';
 
 export const InicioSesion = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch();
     const error = useSelector(state => state.user.loginError)
-    const autenticado = useSelector(state => state.user.isAuthenticated)
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     //Obtener los estados relevanted de Redux
-    const loginError = useSelector(state => state.user.loginError); 
     const isAuthenticated = useSelector(state => state.user.isAuthenticated); // 
-
 
     // Determinamos la ruta a la cual nos va a redirigir despues del login
     const from = location.state?.from?.pathname || '/inicio';
@@ -28,7 +27,7 @@ export const InicioSesion = () => {
         }
     }, [isAuthenticated, navigate, from]); // Dependencias del useEffect
 
-   const handleSubmit = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         console.log("Intentando iniciar sesión con:", { email, password });
 
@@ -47,25 +46,58 @@ export const InicioSesion = () => {
     };
 
     return (
-        <form style={{ display: "flex", flexDirection: "column", gap: "50px", width: "50%", margin: "50px" }} onSubmit={handleSubmit}>
-            <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                required
-                onChange={(e) => setEmail(e.target.value)}
-            />
-            <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                required
-                onChange={(e) => setPassword(e.target.value)}
-            />
-            <button type="submit">Login</button>
-            {error && (
-                <h2>Credenciales invalidas</h2>
-            )}
-        </form>
+        <Container className="d-flex align-items-center justify-content-center" style={{ minHeight: '100vh' }}>
+            <Row className="w-100 justify-content-center">
+                <Col xs={12} md={8} lg={5}>
+                    <Card className="shadow-lg border-0 p-4">
+                        <Card.Body>
+                            <h2 className="mb-4 text-center text-primary fw-bold">Iniciar Sesión</h2>
+                            <Form onSubmit={handleSubmit}>
+                                <Form.Group className="mb-3" controlId="formEmail">
+                                    <Form.Label>Email</Form.Label>
+                                    <InputGroup>
+                                        <InputGroup.Text>
+                                            <FaUser />
+                                        </InputGroup.Text>
+                                        <Form.Control
+                                            type="email"
+                                            placeholder="Email"
+                                            value={email}
+                                            required
+                                            onChange={(e) => setEmail(e.target.value)}
+                                        />
+                                    </InputGroup>
+                                </Form.Group>
+                                <Form.Group className="mb-4" controlId="formPassword">
+                                    <Form.Label>Contraseña</Form.Label>
+                                    <InputGroup>
+                                        <InputGroup.Text>
+                                            <FaLock />
+                                        </InputGroup.Text>
+                                        <Form.Control
+                                            type="password"
+                                            placeholder="Password"
+                                            value={password}
+                                            required
+                                            onChange={(e) => setPassword(e.target.value)}
+                                        />
+                                    </InputGroup>
+                                </Form.Group>
+                                <div className="d-grid">
+                                    <Button variant="primary" type="submit" size="lg">
+                                        Ingresar
+                                    </Button>
+                                </div>
+                                {error && (
+                                    <Alert variant="danger" className="mt-4 text-center">
+                                        <h5>Credenciales inválidas</h5>
+                                    </Alert>
+                                )}
+                            </Form>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+        </Container>
     );
 };

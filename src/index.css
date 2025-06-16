@@ -1,5 +1,10 @@
 body {
   font-family: 'Roboto', sans-serif;
 }
+/* --- Flechas de Carrusel --- */
+.carousel-black-arrows .carousel-control-prev-icon,
+.carousel-black-arrows .carousel-control-next-icon {
+    filter: invert(0.3) sepia(0.5) saturate(0.8) hue-rotate(180deg);
+}
 
 /* Cree este css solo para darle estilo general a todas las letras de la pagina */

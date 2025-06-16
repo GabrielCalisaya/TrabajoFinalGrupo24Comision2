@@ -1,11 +1,28 @@
 // Importamos los componentes de React Bootstrap que utilizaremos para la Navbar
-import React from 'react';
-import { Navbar, Container, Nav } from 'react-bootstrap';
+import { Navbar, Container, Nav, Badge } from 'react-bootstrap';
+// Importacion necesaria para el Logout y la navegación
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../store/userSlice';
+
+// logo para el logout
+import { FiLogOut } from 'react-icons/fi';
 
 // Importamos NavLink para crear enlaces de navegación internos que eviten la recarga de la página
 import { NavLink } from 'react-router-dom';
 
 function AppNavbar() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    // Obtenemos el usuario actual del estado global
+    const user = useSelector(state => state.user);
+
+// Función para manejar el logout del usuario
+    const handleLogout = () => {
+        dispatch(logout());
+        navigate('/'); // Redirige al inicio de sesión
+    };
+    
     return (
         <Navbar bg="dark" variant="dark" expand="lg">
             <Container fluid>
@@ -45,6 +62,33 @@ function AppNavbar() {
                         <Nav.Link as={NavLink} to="/acerca-de">
                             Acerca de
                         </Nav.Link>
+                        </Nav>
+                        {/* Botón de Logout con especificacion de sesion actual y rol */}
+                    <Nav className="ms-auto align-items-center flex-column flex-lg-row">
+                        <span className="mb-2 mb-lg-0 me-0 me-lg-3 d-flex align-items-center justify-content-center w-100 w-lg-auto">
+                            <Badge
+                                bg={user.role === 'ADMIN' ? 'danger' : 'secondary'}
+                                className="px-3 py-2 text-uppercase"
+                                style={{
+                                    fontSize: '1em',
+                                    letterSpacing: '1px',
+                                    minWidth: '70px',
+                                    textAlign: 'center',
+                                    fontWeight: 'bold'
+                                }}
+                            >
+                                {user.role}
+                            </Badge>
+                        </span>
+                        <button
+                            className="btn btn-outline-light d-flex align-items-center justify-content-center w-100 w-lg-auto"
+                            style={{ fontWeight: 'bold', gap: '0.5em', minWidth: 120 }}
+                            onClick={handleLogout}
+                        >
+                            <FiLogOut size={20} />
+                            <span className="d-none d-sm-inline">Cerrar sesión</span>
+                            <span className="d-inline d-sm-none">Salir</span>
+                        </button>
                     </Nav>
                 </Navbar.Collapse>
             </Container>
