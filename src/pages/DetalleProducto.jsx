@@ -10,13 +10,14 @@ import { Container, Card, Button, Row, Col, Badge } from 'react-bootstrap';
 import { agregarFavorito, quitarFavorito } from '../store/favoritosSlice';
 
 import { FaHeart } from 'react-icons/fa';
+import { useEffect } from 'react';
 
 function DetalleProducto() {
     // Obtiene el ID del producto de los parámetros de la URL
     const { id } = useParams();
     const dispatch = useDispatch(); // Inicializa useDispatch para despachar acciones
     const navigate = useNavigate(); // Inicializa useNavigate para la navegación programática
-
+    const user = useSelector(state => state.user);
     // Obtiene la lista de todos los productos y los productos favoritos del estado global
     const productos = useSelector(state => state.products);
     const favoritos = useSelector(state => state.favoritos);
@@ -26,6 +27,11 @@ function DetalleProducto() {
     // Verifica si el producto actual está marcado como favorito
     const esFavorito = favoritos.includes(Number(id));
 
+    useEffect(() => {
+        if (!user.isAuthenticated) {
+            navigate("/")
+        }
+    }, [user.isAuthenticated])
     // Si el producto no se encuentra, muestra un mensaje
     if (!producto) {
         return <Container className="mt-5"><p>Producto no encontrado.</p></Container>;
@@ -90,15 +96,18 @@ function DetalleProducto() {
                                 </div>
                             </Card.Text>
                             {/* Boton para navegar al formulario de edición del producto */}
-                            <div className="d-grid gap-2">
-                                <Button
-                                    variant="info"
-                                    className="mt-3"
-                                    onClick={handleEditarProducto}
-                                >
-                                    Editar Producto
-                                </Button>
-                            </div>
+                            {user.role == "ADMIN" && (
+                                <div className="d-grid gap-2">
+                                    <Button
+                                        variant="info"
+                                        className="mt-3"
+                                        onClick={handleEditarProducto}
+                                    >
+                                        Editar Producto
+                                    </Button>
+                                </div>
+                            )}  
+                              
                         </Card.Body>
                     </Card>
                 </Col>

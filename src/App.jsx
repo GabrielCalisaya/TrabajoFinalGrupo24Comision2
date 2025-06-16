@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 //Acá realizamos la importacion de las páginas
 //En esta página se mostrará el listado principal de productos
 import Inicio from './pages/Inicio.jsx'
@@ -17,18 +18,27 @@ import AppNavbar from './components/AppNavbar.jsx'
 import Footer from './components/Footer.jsx'
 //import { useTraerProductos } from './hooks/useTraerProductos.jsx'
 
+import { InicioSesion } from './pages/InicioSesion.jsx'
 function App() {
+  const user = useSelector(state => state.user)
+
+  //console.log(user, "user");
+
   return (
     <BrowserRouter>
       {/* agrege "flex-column" para que el div ocupe todo el alto de la pantalla y "min-vh-100" para que ocupe todo el alto de la pantalla*/}
       <div className="d-flex flex-column min-vh-100">
         {/* Navbar se renderizara fuera de "Routes" para que aparezca en todas las paginas */}
-        <AppNavbar />
+        {user.isAuthenticated && (
+
+          <AppNavbar />
+        )}
         {/* agregue "flex-grow-1" para que el main ocupe todo el espacio disponible entre el navbar y el footer */}
         <main className="flex-grow-1">
           <Routes>
             {/* Ruta para el inicio */}
-            <Route path='/' element={<Inicio />} />
+            <Route path='/' element={<InicioSesion />} />
+            <Route path='/inicio' element={<Inicio />} />
             {/* Ruta para los elementos marcados en favoritos */}
             <Route path='/favoritos' element={<Favoritos />} />
             {/* Ruta para la página de detalle de un producto */}
@@ -46,11 +56,15 @@ function App() {
           </Routes>
         </main>
         {/* Footer se renderizá fuera de Routes para que aparezca en todas las páginas */}
-        <Footer />
+        {user.isAuthenticated && (
+
+
+          <Footer />
+        )}
       </div>
     </BrowserRouter>
   );
-}
+};
 
 export default App;
 

@@ -5,11 +5,19 @@ import { SpinnerLoad } from "../components/SpinnerLoad";
 import { Button, Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { selectActiveProducts } from '../store/productosSlice';
+import { useEffect } from "react";
 
 function Inicio() {
     const { loading, error } = useTraerProductos();
     const products = useSelector(selectActiveProducts);
     const navigate = useNavigate();
+    const user = useSelector(state => state.user);
+    // valida que si el usuario ingresa a esta ruta manualmente, lo redirige al login en caso de no estar autenticado(esto deberia guardarse en el localstorage)
+    useEffect(() => {
+        if (!user.isAuthenticated) {
+            navigate("/")
+        }
+    }, [user.isAuthenticated])
 
     const handleCrearProducto = () => {
         navigate('/formulario');
@@ -19,6 +27,7 @@ function Inicio() {
         // Muestra un mensaje de error si falla la carga de productos
         return <Container className="mt-5"><p className="text-danger text-center">Error al cargar los productos.</p></Container>;
     }
+
 
     return (
         <Container className="mt-4 mb-5">
@@ -31,19 +40,22 @@ function Inicio() {
             </div>
             <h2 className="text-center mb-4">Página de Inicio de Productos</h2>
             <p className="text-center mb-4">Aquí se listarán todas las tarjetas de productos.</p>
+            {/* Mostrar para  el admin */}
+            {user.role == "ADMIN" && (
+                <Row className="justify-content-center mb-5">
+                    <Col xs={12} md={6} lg={4} className="text-center">
+                        <Button
+                            variant="primary"
+                            size="lg"
+                            onClick={handleCrearProducto}
+                            className="w-75"
+                        >
+                            Crear Nuevo Producto
+                        </Button>
+                    </Col>
+                </Row>
 
-            <Row className="justify-content-center mb-5">
-                <Col xs={12} md={6} lg={4} className="text-center">
-                    <Button
-                        variant="primary"
-                        size="lg"
-                        onClick={handleCrearProducto}
-                        className="w-75"
-                    >
-                        Crear Nuevo Producto
-                    </Button>
-                </Col>
-            </Row>
+            )}
 
             {loading ? (
                 // Muestra el spinner mientras los productos están cargando
@@ -55,7 +67,7 @@ function Inicio() {
                 ) : (
                     // Muestra el grid de productos
                     <Row xs={1} md={2} lg={3} className="g-4 justify-content-center">
-                        {products.map((producto) => (
+                        {products.map((producto) =>(
                             <Col key={producto.id} className="d-flex justify-content-center">
                                 <ProductoCarta producto={producto} />
                             </Col>

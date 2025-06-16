@@ -11,11 +11,11 @@ function ProductoCarta({ producto }) {
     const dispatch = useDispatch();
     const favoritos = useSelector(state => state.favoritos); // Obtiene IDs de favoritos
     const esFavorito = favoritos.includes(producto.id);
-
+    const user = useSelector(state => state.user);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     const handleVerDetalles = () => {
-        navigate(`/detalle/${producto.id}`);
+        navigate(`/detalle/${producto.id} `);
     };
 
     const toggleFavorito = (e) => {
@@ -75,14 +75,17 @@ function ProductoCarta({ producto }) {
                     >
                         {esFavorito ? <FaHeart /> : <FaRegHeart />}
                     </Button>
-                    <Button
-                        variant="danger"
-                        onClick={handleShowDeleteModal}
-                        style={{ fontSize: '1.2rem', padding: '0.5rem' }}
-                        aria-label="Eliminar Producto"
-                    >
-                        <FaTrash />
-                    </Button>
+                    {user.role == "ADMIN" && (
+                        <Button
+                            variant="danger"
+                            onClick={handleShowDeleteModal}
+                            style={{ fontSize: '1.2rem', padding: '0.5rem' }}
+                            aria-label="Eliminar Producto"
+                        >
+                            <FaTrash />
+                        </Button>
+                    )}
+
                 </div>
             </Card.Body>
             <Modal show={showDeleteModal} onHide={handleCloseDeleteModal} centered>
