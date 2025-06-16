@@ -9,7 +9,7 @@ export const InicioSesion = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch();
     const error = useSelector(state => state.user.loginError)
-    const [email, setEmail] = useState('');
+    const [usuario, setUsuario] = useState('');
     const [password, setPassword] = useState('');
 
     //Obtener los estados relevanted de Redux
@@ -29,19 +29,19 @@ export const InicioSesion = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("Intentando iniciar sesión con:", { email, password });
+        console.log("Intentando iniciar sesión con:", { usuario, password });
 
         // ¡IMPORTANTE!: Solo envía email y password.
         // El reducer 'setUser' en userSlice.js tiene la lógica de validación
         // y establecerá 'isAuthenticated' y 'loginError' basado en esas credenciales.
-        dispatch(setUser({ email, password }));
+        dispatch(setUser({ usuario, password }));
 
         // No necesitamos lógica condicional aquí para el dispatch de setUser,
         // ya que el userSlice.js lo maneja internamente.
         // Los console.log del useEffect nos dirán si isAuthenticated cambió.
 
         // Limpia los campos del formulario después del intento
-        setEmail('');
+        setUsuario('');
         setPassword('');
     };
 
@@ -53,18 +53,18 @@ export const InicioSesion = () => {
                         <Card.Body>
                             <h2 className="mb-4 text-center text-primary fw-bold">Iniciar Sesión</h2>
                             <Form onSubmit={handleSubmit}>
-                                <Form.Group className="mb-3" controlId="formEmail">
+                                <Form.Group className="mb-3" controlId="formUsuario">
                                     <Form.Label>Email</Form.Label>
                                     <InputGroup>
                                         <InputGroup.Text>
                                             <FaUser />
                                         </InputGroup.Text>
                                         <Form.Control
-                                            type="email"
-                                            placeholder="Email"
-                                            value={email}
+                                            type="text"
+                                            placeholder="Ingrese su usuario"
+                                            value={usuario}
                                             required
-                                            onChange={(e) => setEmail(e.target.value)}
+                                            onChange={(e) => setUsuario(e.target.value)}
                                         />
                                     </InputGroup>
                                 </Form.Group>
