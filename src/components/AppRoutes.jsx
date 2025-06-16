@@ -18,7 +18,7 @@ import NoEncontrada from '../pages/PaginaNoEncontrada.jsx'
 
 //Importación del componente protector de rutas
 import ProtectedRoute from '../components/ProteccionDeRutas.jsx'
-
+import RutaAdmin from './RutaAdmin.jsx'
 import { InicioSesion } from '../pages/InicioSesion.jsx'
 const AppRoutes = () => {
   return (
@@ -55,17 +55,17 @@ const AppRoutes = () => {
       <Route
         path='formulario/:id'
         element={
-          <ProtectedRoute>
+          <RutaAdmin>
             <FormularioProducto />
-          </ProtectedRoute>
+          </RutaAdmin>
         }
       />
       <Route
         path='/formulario'
         element={
-          <ProtectedRoute>
+          <RutaAdmin>
             <FormularioProducto />
-          </ProtectedRoute>
+          </RutaAdmin>
         }
       />
       <Route

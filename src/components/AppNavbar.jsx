@@ -54,10 +54,11 @@ function AppNavbar() {
                         </Nav.Link>
 
                         {/* NavLink para el formulario de añadir/editar productos */}
+                        {user.role=== 'ADMIN' && (
                         <Nav.Link as={NavLink} to="/formulario">
                             Añadir Producto
                         </Nav.Link>
-
+                        )}
                         {/* NavLink para "Acerca De" */}
                         <Nav.Link as={NavLink} to="/acerca-de">
                             Acerca de

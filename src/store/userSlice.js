@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    email: '',
+    usuario: '',
     role: '',
     isAuthenticated: false,
     loginError: false,
@@ -12,27 +12,29 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         setUser: (state, action) => {
-            const { email, password } = action.payload;
+            const { usuario, password } = action.payload;
 
-            // Simulación de login hardcodeado
-            if (email === 'admin@gmail.com' && password === 'admin123') {
-                state.email = email;
+            // datos login
+            if (usuario === 'admin' && password === 'admin') {
+                state.usuario = usuario;
                 state.role = 'ADMIN';
                 state.isAuthenticated = true;
-            } else if (email == "user@gmail.com" && password === "passuser" || email == "a@gmail.com" && password == "p") {
-                state.email = email;
+                state.loginError = false;
+            } else if (usuario == "user" && password === "user") {
+                state.usuario = usuario;
                 state.role = 'USER';
                 state.isAuthenticated = true;
+                state.loginError = false;
             } else {
-                // Limpia si los datos no son válidos
-                state.email = '';
+                // Limpii si los datos no son validos
+                state.usuario = '';
                 state.role = '';
                 state.loginError = true,
                     state.isAuthenticated = false;
             }
         },
         logout: (state) => {
-            state.email = '';
+            state.usuario = '';
             state.role = '';
             state.isAuthenticated = false;
         },
