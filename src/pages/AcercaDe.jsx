@@ -4,7 +4,7 @@ function AcercaDe() {
   const miembros = [
     {
       nombre: 'Gabriel Calisaya',
-      rol: 'Especialista en desarrollo frontend y experiencia de usuario.',
+      rol: 'Encargado de la validación del formulario y correcciones en general.',
       
     },
     {

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from '../store/userSlice';
+
 export const InicioSesion = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch();
@@ -10,16 +11,37 @@ export const InicioSesion = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    //Obtener los estados relevanted de Redux
+    const loginError = useSelector(state => state.user.loginError); 
+    const isAuthenticated = useSelector(state => state.user.isAuthenticated); // 
+
+
+    // Determinamos la ruta a la cual nos va a redirigir despues del login
+    const from = location.state?.from?.pathname || '/inicio';
+
     useEffect(() => {
-
-        if (autenticado) {
-            navigate("/inicio")
+        // Este useEffect se ejecuta cada vez que 'isAuthenticated' cambia.
+        console.log("Estado de autenticación actual en useEffect:", isAuthenticated);
+        if (isAuthenticated) {
+            console.log("Usuario autenticado, redirigiendo a:", from);
+            navigate(from, { replace: true });
         }
-    }, [autenticado])
+    }, [isAuthenticated, navigate, from]); // Dependencias del useEffect
 
-    const handleSubmit = (e) => {
+   const handleSubmit = (e) => {
         e.preventDefault();
+        console.log("Intentando iniciar sesión con:", { email, password });
+
+        // ¡IMPORTANTE!: Solo envía email y password.
+        // El reducer 'setUser' en userSlice.js tiene la lógica de validación
+        // y establecerá 'isAuthenticated' y 'loginError' basado en esas credenciales.
         dispatch(setUser({ email, password }));
+
+        // No necesitamos lógica condicional aquí para el dispatch de setUser,
+        // ya que el userSlice.js lo maneja internamente.
+        // Los console.log del useEffect nos dirán si isAuthenticated cambió.
+
+        // Limpia los campos del formulario después del intento
         setEmail('');
         setPassword('');
     };
