@@ -44,6 +44,10 @@ export const InicioSesion = () => {
         setUsuario('');
         setPassword('');
     };
+    const ingresoInvitado = () => {
+        dispatch(setUser({ usuario: 'invitado', password: '' }));
+        navigate("/");
+    };
 
     return (
         <Container className="d-flex align-items-center justify-content-center" style={{ minHeight: '100vh' }}>
@@ -88,6 +92,11 @@ export const InicioSesion = () => {
                                         Ingresar
                                     </Button>
                                 </div>
+                                <div className='d-grid mt-3'>
+                                    <Button variant="secondary" className="btn btn-secondary" type="button" size="lg" onClick={ingresoInvitado}>
+                                        INGRESAR COMO INVITADO
+                                        </Button>
+                                    </div>
                                 {error && (
                                     <Alert variant="danger" className="mt-4 text-center">
                                         <h5>Credenciales inválidas</h5>

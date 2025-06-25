@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProduct, updateProduct } from '../store/productosSlice';
 import { Container, Form, Button, Row, Col } from 'react-bootstrap';
+import { useTraerProductos } from '../hooks/useTraerProductos';
 
 function FormularioProducto() {
     const { id } = useParams();
@@ -10,6 +11,8 @@ function FormularioProducto() {
     const dispatch = useDispatch();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const products = useSelector(state => state.products);
+
+    const {loading , error, categorias} = useTraerProductos();
 
     const [formData, setFormData] = useState({
         title: '',
@@ -181,14 +184,19 @@ function FormularioProducto() {
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formCategory">
                             <Form.Label>Categoría</Form.Label>
-                            <Form.Control
-                                type="text"
+                            <Form.Select
                                 name="category"
                                 value={formData.category}
                                 onChange={handleChange}
-                                placeholder="Introduce la categoría"
                                 isInvalid={!!errors.category}
-                            />
+                            >
+                                <option value="">Selecciona una categoría</option>
+                                {categorias.map((cat) => (
+                                    <option key={cat} value={cat}>
+                                        {cat}
+                                    </option>
+                                ))}
+                            </Form.Select>
                             <Form.Control.Feedback type="invalid">
                                 {errors.category}
                             </Form.Control.Feedback>

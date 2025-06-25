@@ -1,14 +1,10 @@
 // Importación de hooks de React Router DOM para acceder a parámetros de URL y para la navegación
 import { useParams, useNavigate } from 'react-router-dom';
-
 // Importación de hooks de Redux para acceder al estado global y despachar acciones
 import { useSelector, useDispatch } from 'react-redux';
-
 import { Container, Card, Button, Row, Col, Badge } from 'react-bootstrap';
-
 // Importación de las acciones para agregar y quitar productos de favoritos
 import { agregarFavorito, quitarFavorito } from '../store/favoritosSlice';
-
 import { FaHeart } from 'react-icons/fa';
 import { useEffect } from 'react';
 
@@ -20,7 +16,7 @@ function DetalleProducto() {
     const user = useSelector(state => state.user);
     // Obtiene la lista de todos los productos y los productos favoritos del estado global
     const productos = useSelector(state => state.products);
-    const favoritos = useSelector(state => state.favoritos);
+    const favoritos = useSelector(state => state.favoritos[user.usuario] || []);
 
     // Busca el producto específico por su ID en la lista de productos
     const producto = productos.find(p => p.id === Number(id));
@@ -40,9 +36,9 @@ function DetalleProducto() {
     // Función para alternar el estado de favorito de un producto
     const toggleFavorito = () => {
         if (esFavorito) {
-            dispatch(quitarFavorito(producto.id)); // Si es favorito, lo quita
+            dispatch(quitarFavorito({ usuario: user.usuario, idProducto: producto.id }));
         } else {
-            dispatch(agregarFavorito(producto.id)); // Si no es favorito, lo agrega
+            dispatch(agregarFavorito({ usuario: user.usuario, idProducto: producto.id }));
         }
     };
 
@@ -64,9 +60,10 @@ function DetalleProducto() {
                             className="p-4"
                         />
                         <Card.Body>
+                        {user.role !== "INVITADO" && (
                             <div className="d-flex align-items-center justify-content-between mb-2">
                                 <Card.Title className="mb-4 display-6">{producto.title}</Card.Title>
-                                <Button
+                                    <Button
                                     variant="link"
                                     onClick={toggleFavorito}
                                     style={{ color: esFavorito ? 'red' : '#6c757d', fontSize: '2rem', textDecoration: 'none' }}
@@ -75,6 +72,7 @@ function DetalleProducto() {
                                     <FaHeart />
                                 </Button>
                             </div>
+                        )}
                             {/*puse "as='div'" para que el texto no se vea como un párrafo y se pueda usar h5 (tiraba un error que no afectaba el funcionamiento pero si figuraba en consola)*/}
                             <Card.Text as="div">
                                 <h5>

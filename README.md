@@ -4,14 +4,24 @@ Para obtener detalles completos sobre este proyecto, incluyendo sus caracteristi
 
 ## Las credenciales de inicio de sesion son:
 
-**Para Admin:**
+**Para Admin/s:**
 
-user: admin
-pass: admin
+user: gustavososa
+pass: 1234
 
-**Para User:**
+user: juanedm
+pass: 5678
 
-user: user
-pass: user
+**Para User/s:**
+
+user: android
+pass: 4321
+
+user: nati
+pass: 8765
+
+**Para Invitado:**
+
+Ingresa sin credenciales.
 
 Puedes acceder a ella desde la barra de navegacion principal.

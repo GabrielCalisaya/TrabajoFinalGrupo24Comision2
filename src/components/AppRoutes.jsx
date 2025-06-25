@@ -11,14 +11,14 @@ import FormularioProducto from '../pages/FormularioProducto.jsx'
 // Importación de la página "Acerca de"
 import AcercaDe from '../pages/AcercaDe.jsx'
 // Importación de la página de error (404)
+import Papelera from '../pages/Papelera.jsx'
 import NoEncontrada from '../pages/PaginaNoEncontrada.jsx'
 //Importación de los componentes de layout globales que se renderizarán en todas las páginasimport
-
 //import { useTraerProductos } from './hooks/useTraerProductos.jsx'
-
 //Importación del componente protector de rutas
 import ProtectedRoute from '../components/ProteccionDeRutas.jsx'
 import RutaAdmin from './RutaAdmin.jsx'
+import RutaProtegidaInvitado from './RutaProtegidaInvitado.jsx'
 import { InicioSesion } from '../pages/InicioSesion.jsx'
 const AppRoutes = () => {
   return (
@@ -39,9 +39,11 @@ const AppRoutes = () => {
       <Route
         path='/favoritos'
         element={
+          <RutaProtegidaInvitado>
           <ProtectedRoute>
             <Favoritos />
           </ProtectedRoute>
+          </RutaProtegidaInvitado>  
         }
       />
       <Route
@@ -68,6 +70,14 @@ const AppRoutes = () => {
           </RutaAdmin>
         }
       />
+      <Route
+        path='/papelera'
+        element={
+          <RutaAdmin>
+            <Papelera />
+          </RutaAdmin>
+        }
+        />
       <Route
         path='acerca-de'
         element={

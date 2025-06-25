@@ -1,40 +1,8 @@
 import { Container, Card, Carousel, Badge } from 'react-bootstrap';
 import { FaGithub } from 'react-icons/fa';
+import participantes from '../data/participantes.json';
 
 function AcercaDe() {
-  const participantes = [
-    {
-      nombre: "Calisaya Gabriel",
-      github: "GabrielCalisaya",
-      url: "https://github.com/GabrielCalisaya",
-      img: "https://github.com/GabrielCalisaya.png",
-    },
-    {
-      nombre: "Juan Carrizo",
-      github: "JuanCarrizo9",
-      url: "https://github.com/JuanCarrizo9",
-      img: "https://github.com/JuanCarrizo9.png",
-    },
-    {
-      nombre: "Juan Sebastian",
-      github: "Juansebaca",
-      url: "https://github.com/Juansebaca",
-      img: "https://github.com/Juansebaca.png",
-    },
-    {
-      nombre: "Natali Suarez",
-      github: "natalicmk",
-      url: "https://github.com/natalicmk",
-      img: "https://github.com/natalicmk.png",
-    },
-    {
-      nombre: "Fernando Romero",
-      github: "Android",
-      url: "https://github.com/TuAndroide",
-      img: "https://github.com/TuAndroide.png",
-    },
-  ];
-
   return (
     <section id="about-us" className="py-5">
       <Container className="text-center">
@@ -67,12 +35,12 @@ function AcercaDe() {
                   boxShadow: "0 2px 16px rgba(0,0,0,0.08)"
                 }}
               >
-                {participantes.map((p) => (
-                  <Carousel.Item key={p.github}>
+                {participantes.map((participantes) => (
+                  <Carousel.Item key={participantes.github}>
                     <div className="d-flex flex-column align-items-center">
                       <img
-                        src={p.img}
-                        alt={p.nombre}
+                        src={participantes.img}
+                        alt={participantes.nombre}
                         className="rounded-circle mb-3"
                         style={{
                           width: 120,
@@ -81,9 +49,9 @@ function AcercaDe() {
                           border: "4px solid #0d6efd",
                         }}
                       />
-                      <h5 className="mb-1">{p.nombre}</h5>
+                      <h5 className="mb-1">{participantes.nombre}</h5>
                       <a
-                        href={p.url}
+                        href={participantes.url}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="mb-2"
@@ -91,7 +59,7 @@ function AcercaDe() {
                       >
                         <Badge bg="dark" className="d-flex align-items-center gap-1">
                           <FaGithub style={{ fontSize: "1.1em" }} />
-                          {p.github}
+                          {participantes.github}
                         </Badge>
                       </a>
                     </div>

@@ -4,10 +4,9 @@ import { Navbar, Container, Nav, Badge } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../store/userSlice';
-
 // logo para el logout
 import { FiLogOut } from 'react-icons/fi';
-
+import usersData from '../data/usersData'; // Importamos los datos de usuarios para simular la autenticación
 // Importamos NavLink para crear enlaces de navegación internos que eviten la recarga de la página
 import { NavLink } from 'react-router-dom';
 
@@ -49,14 +48,25 @@ function AppNavbar() {
                         </Nav.Link>
 
                         {/* NavLink para la página de "Favoritos" */}
+                        {user.role ==='ADMIN' && (
                         <Nav.Link as={NavLink} to="/favoritos">
                             Favoritos
                         </Nav.Link>
-
+                        )}
+                        {user.role ==='USER' && (
+                        <Nav.Link as={NavLink} to="/favoritos">
+                            Favoritos
+                        </Nav.Link>
+                        )}
                         {/* NavLink para el formulario de añadir/editar productos */}
                         {user.role=== 'ADMIN' && (
                         <Nav.Link as={NavLink} to="/formulario">
                             Añadir Producto
+                        </Nav.Link>
+                        )}
+                        {user.role ==='ADMIN' && (
+                        <Nav.Link as={NavLink} to="/papelera">
+                            Papelera
                         </Nav.Link>
                         )}
                         {/* NavLink para "Acerca De" */}
@@ -78,7 +88,7 @@ function AppNavbar() {
                                     fontWeight: 'bold'
                                 }}
                             >
-                                {user.role}
+                                {`${user.role} - ${user.nombre}`} {user.img && (<img src={user.img} alt={user.nombre} style={{ width: '30px', height: '30px', borderRadius: '50%', marginLeft: '10px' }} />)}
                             </Badge>
                         </span>
                         <button
