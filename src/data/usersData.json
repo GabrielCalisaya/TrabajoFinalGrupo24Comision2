@@ -1,0 +1,45 @@
+[{
+    "nombre":"Gustavo Sosa",
+    "usuario":"gustavososa",
+    "password":"1234",
+    "role":"ADMIN",
+    "isAuthenticated": true,
+    "loginError": false,
+    "img": "https://github.com/gustso.png"
+},
+{
+    "nombre":"Fernando Romero",
+    "usuario":"android",
+    "password":"4321",
+    "role":"USER",
+    "isAuthenticated": true,
+    "loginError": false,
+    "img": "https://github.com/TuAndroide.png"
+},
+{
+    "nombre":"Juan Sebastian",
+    "usuario":"juanedm",
+    "password":"5678",
+    "role":"ADMIN",
+    "isAuthenticated": true,
+    "loginError": false,
+    "img": "https://github.com/Juansebaca.png"
+},
+{
+    "nombre":"Natali Suarez",
+    "usuario":"nati",
+    "password":"8765",
+    "role":"USER",
+    "isAuthenticated": true,
+    "loginError": false,
+    "img": "https://github.com/natalicmk.png"
+},
+{
+    "nombre":"invitado",
+    "usuario":"invitado",
+    "password":"",
+    "role":"INVITADO",
+    "isAuthenticated": true,
+    "loginError": false,
+    "img": ""
+}]

@@ -22,6 +22,9 @@ function Inicio() {
     const handleCrearProducto = () => {
         navigate('/formulario');
     };
+    const handlePapelera = () => {
+        navigate('/papelera');
+    };
 
     if (error) {
         // Muestra un mensaje de error si falla la carga de productos
@@ -54,8 +57,21 @@ function Inicio() {
                         </Button>
                     </Col>
                 </Row>
-
             )}
+            {user.role == "ADMIN" && (
+                    <Row className="justify-content-center mb-4">
+                        <Col xs={12} md={6} lg={4} className="text-center">
+                        <Button
+                            variant="danger"
+                            size="lg"
+                            className="w-75"
+                            onClick={handlePapelera}
+                        >
+                        Papelera
+                        </Button>
+                        </Col>
+                        </Row>
+                    )}
 
             {loading ? (
                 // Muestra el spinner mientras los productos están cargando

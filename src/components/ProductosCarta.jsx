@@ -3,15 +3,15 @@ import { Card, Button, Modal} from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { agregarFavorito, quitarFavorito } from '../store/favoritosSlice';
-import { removeProduct } from '../store/productosSlice'; // Importa la acción para eliminar
+import { removeProduct, restoreProduct} from '../store/productosSlice'; // Importa la acción para eliminar
 import { FaHeart, FaRegHeart, FaTrash } from 'react-icons/fa'; // Iconos para favorito y eliminar
 
-function ProductoCarta({ producto }) {
+function ProductoCarta({ producto, papelera }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const favoritos = useSelector(state => state.favoritos); // Obtiene IDs de favoritos
-    const esFavorito = favoritos.includes(producto.id);
     const user = useSelector(state => state.user);
+    const favoritosPorUsuario = useSelector(state => state.favoritos);
+    const esFavorito = (favoritosPorUsuario[user.usuario] || []).includes(producto.id);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     const handleVerDetalles = () => {
@@ -21,11 +21,11 @@ function ProductoCarta({ producto }) {
     const toggleFavorito = (e) => {
         e.stopPropagation(); // Evita que el clic en el botón de favorito active el detalle
         if (esFavorito) {
-            dispatch(quitarFavorito(producto.id));
-        } else {
-            dispatch(agregarFavorito(producto.id));
-        }
-    };
+            dispatch(quitarFavorito({ usuario: user.usuario, idProducto:producto.id }));
+          } else {
+            dispatch(agregarFavorito({ usuario: user.usuario, idProducto:producto.id }));
+          }
+        };
     const handleShowDeleteModal = (e) => {
         e.stopPropagation(); // Evita el clic en el detalle
         setShowDeleteModal(true);
@@ -40,8 +40,11 @@ function ProductoCarta({ producto }) {
         handleCloseDeleteModal(); // Cierra el modal después de despachar la acción
         alert('Producto eliminado correctamente.'); 
     };
-
-    if (producto.estado === 'inactivo') {
+    const handleRestaurar = () => {
+        dispatch(restoreProduct({ id: producto.id }));
+        alert('Producto restaurado correctamente.');
+    }
+    if (producto.estado === 'inactivo' && !papelera) {
         return null;
     }
 
@@ -64,9 +67,13 @@ function ProductoCarta({ producto }) {
                     Precio: ${producto.price?.toFixed(2)}
                 </Card.Text>
                 <div className="d-flex justify-content-between align-items-center mt-auto">
+                {producto.estado !== 'inactivo' && user.role !== "INVITADO" &&(
                     <Button variant="primary" onClick={handleVerDetalles}>
                         Ver detalles
                     </Button>
+                )}
+                    {/*Si el producto esta activo y rol no es invitado, mostrar agregar a favoritos */}
+                    {producto.estado !== 'inactivo' && user.role !== "INVITADO" && (
                     <Button
                         variant="link"
                         onClick={toggleFavorito}
@@ -75,7 +82,8 @@ function ProductoCarta({ producto }) {
                     >
                         {esFavorito ? <FaHeart /> : <FaRegHeart />}
                     </Button>
-                    {user.role == "ADMIN" && (
+                    )}
+                    {producto.estado !== 'inactivo' && user.role == "ADMIN" && (
                         <Button
                             variant="danger"
                             onClick={handleShowDeleteModal}
@@ -85,7 +93,12 @@ function ProductoCarta({ producto }) {
                             <FaTrash />
                         </Button>
                     )}
-
+                {producto.estado === 'inactivo' && papelera && (
+                    <Button variant ="success"
+                            onClick={handleRestaurar}
+                            style={{ fontSize: '1rem', padding: '0.5rem' }}
+                            aria-label='Restaurar Producto'>Restaurar</Button>
+                    )}
                 </div>
             </Card.Body>
             <Modal show={showDeleteModal} onHide={handleCloseDeleteModal} centered>

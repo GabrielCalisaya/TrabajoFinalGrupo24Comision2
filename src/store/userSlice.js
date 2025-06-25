@@ -1,8 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
+import usersData from '../data/usersData.json';
 
 const initialState = {
     usuario: '',
     role: '',
+    nombre: '',
+    img: '',
     isAuthenticated: false,
     loginError: false,
 };
@@ -13,24 +16,21 @@ const userSlice = createSlice({
     reducers: {
         setUser: (state, action) => {
             const { usuario, password } = action.payload;
-
+            const usuarioEncontrado = usersData.find(user => user.usuario === usuario && user.password === password);
             // datos login
-            if (usuario === 'admin' && password === 'admin') {
-                state.usuario = usuario;
-                state.role = 'ADMIN';
-                state.isAuthenticated = true;
-                state.loginError = false;
-            } else if (usuario == "user" && password === "user") {
-                state.usuario = usuario;
-                state.role = 'USER';
+            if (usuarioEncontrado) {
+                state.usuario = usuarioEncontrado.usuario;
+                state.role = usuarioEncontrado.role;
+                state.nombre = usuarioEncontrado.nombre; 
+                state.img = usuarioEncontrado.img; 
                 state.isAuthenticated = true;
                 state.loginError = false;
             } else {
                 // Limpii si los datos no son validos
                 state.usuario = '';
                 state.role = '';
-                state.loginError = true,
-                    state.isAuthenticated = false;
+                state.loginError = true;
+                state.isAuthenticated = false;
             }
         },
         logout: (state) => {
