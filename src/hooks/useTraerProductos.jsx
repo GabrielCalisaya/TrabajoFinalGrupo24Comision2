@@ -28,7 +28,7 @@ export const useTraerProductos = () => {
                 dispatch(setProducts(data));
                 //TRAe las categorias
                 const cats = Array.from(new Set(data.map(product => product.category)));
-                setCategorias(cats); // <-- Corregido el nombre, respeta tus comentarios
+                setCategorias(cats);
             } catch (err) {
                 // Captura y establece cualquier error durante la carga
                 setError(err.message || "Error al obtener los productos");
@@ -47,7 +47,7 @@ export const useTraerProductos = () => {
             setLoading(false);
             //si ya existian productos en el store, extrae las categorias de los productos existentes
             const cats = Array.from(new Set((currentProductsInStore || []).map(product => product.category)));
-            setCategorias(cats); // <-- Corregido el nombre, respeta tus comentarios
+            setCategorias(cats);
         }
     }, [dispatch, currentProductsInStore?.length]); // Dependencia solo en la longitud
 

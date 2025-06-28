@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Container, Card, Button, Row, Col, Badge } from 'react-bootstrap';
 // Importación de las acciones para agregar y quitar productos de favoritos
 import { agregarFavorito, quitarFavorito } from '../store/favoritosSlice';
-import { FaHeart } from 'react-icons/fa';
+import { FaHeart, FaArrowLeft} from 'react-icons/fa';
 import { useEffect } from 'react';
 
 function DetalleProducto() {
@@ -52,6 +52,22 @@ function DetalleProducto() {
             <Row className="justify-content-center">
                 <Col xs={12} md={8} lg={6}>
                     <Card className="shadow-lg border-0 rounded-4">
+                    <Button
+                variant="light"
+                onClick={() => navigate('/inicio')}
+                style={{
+                    position: 'absolute',
+                    top: 10,
+                    left: 10,
+                    zIndex: 2,
+                    borderRadius: '50%',
+                    padding: '0.4rem 0.5rem',
+                    boxShadow: '0 2px 6px rgba(0,0,0,0.08)'
+                }}
+                aria-label="Volver al inicio"
+            >
+                <FaArrowLeft size={18} />
+            </Button>
                         <Card.Img
                             variant="top"
                             src={producto.image || "https://via.placeholder.com/150"}
@@ -67,7 +83,6 @@ function DetalleProducto() {
                                     variant="link"
                                     onClick={toggleFavorito}
                                     style={{ color: esFavorito ? 'red' : '#6c757d', fontSize: '2rem', textDecoration: 'none' }}
-                                    aria-label={esFavorito ? 'Quitar de Favoritos' : 'Agregar a Favoritos'}
                                 >
                                     <FaHeart />
                                 </Button>
@@ -105,7 +120,6 @@ function DetalleProducto() {
                                     </Button>
                                 </div>
                             )}  
-                              
                         </Card.Body>
                     </Card>
                 </Col>
