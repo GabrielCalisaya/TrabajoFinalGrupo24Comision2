@@ -13,6 +13,7 @@ function ProductoCarta({ producto, papelera }) {
     const favoritosPorUsuario = useSelector(state => state.favoritos);
     const esFavorito = (favoritosPorUsuario[user.usuario] || []).includes(producto.id);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showRestaurarModal, setShowRestaurarModal] = useState(false);
 
     const handleVerDetalles = () => {
         navigate(`/detalle/${producto.id} `);
@@ -26,6 +27,10 @@ function ProductoCarta({ producto, papelera }) {
             dispatch(agregarFavorito({ usuario: user.usuario, idProducto:producto.id }));
           }
         };
+    const handleShowRestaurarModal = (e) => {
+            e.stopPropagation(); // Evita el clic en el detalle
+            setShowRestaurarModal(true);
+        };
     const handleShowDeleteModal = (e) => {
         e.stopPropagation(); // Evita el clic en el detalle
         setShowDeleteModal(true);
@@ -33,16 +38,16 @@ function ProductoCarta({ producto, papelera }) {
 
     // Función para cerrar el modal de confirmación
     const handleCloseDeleteModal = () => setShowDeleteModal(false);
+    const handleCloseRestaurarModal = () => setShowRestaurarModal(false);
 
     // Funcion que se ejecuta cuando el usuario confirma la eliminacion
     const handleConfirmDelete = () => {
         dispatch(removeProduct({ id: producto.id }));
-        handleCloseDeleteModal(); // Cierra el modal después de despachar la acción
-        alert('Producto eliminado correctamente.'); 
+        handleCloseDeleteModal();
     };
     const handleRestaurar = () => {
         dispatch(restoreProduct({ id: producto.id }));
-        alert('Producto restaurado correctamente.');
+        handleCloseRestaurarModal();
     }
     if (producto.estado === 'inactivo' && !papelera) {
         return null;
@@ -67,7 +72,7 @@ function ProductoCarta({ producto, papelera }) {
                     Precio: ${producto.price?.toFixed(2)}
                 </Card.Text>
                 <div className="d-flex justify-content-between align-items-center mt-auto">
-                {producto.estado !== 'inactivo' && user.role !== "INVITADO" &&(
+                {producto.estado !== 'inactivo' &&(
                     <Button variant="primary" onClick={handleVerDetalles}>
                         Ver detalles
                     </Button>
@@ -78,7 +83,6 @@ function ProductoCarta({ producto, papelera }) {
                         variant="link"
                         onClick={toggleFavorito}
                         style={{ color: esFavorito ? 'red' : 'gray', fontSize: '1.5rem' }}
-                        aria-label={esFavorito ? 'Quitar de Favoritos' : 'Agregar a Favoritos'}
                     >
                         {esFavorito ? <FaHeart /> : <FaRegHeart />}
                     </Button>
@@ -95,12 +99,13 @@ function ProductoCarta({ producto, papelera }) {
                     )}
                 {producto.estado === 'inactivo' && papelera && (
                     <Button variant ="success"
-                            onClick={handleRestaurar}
+                            onClick={handleShowRestaurarModal}
                             style={{ fontSize: '1rem', padding: '0.5rem' }}
                             aria-label='Restaurar Producto'>Restaurar</Button>
                     )}
                 </div>
             </Card.Body>
+            {/* Modal Eliminar */}
             <Modal show={showDeleteModal} onHide={handleCloseDeleteModal} centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Confirmar Eliminación</Modal.Title>
@@ -117,7 +122,25 @@ function ProductoCarta({ producto, papelera }) {
                     </Button>
                 </Modal.Footer>
             </Modal>
+            {/* Modal Restaurar */}
+            <Modal show={showRestaurarModal} onHide={handleCloseRestaurarModal} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirmar Restauracion</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    ¿Estas seguro de que deseas restaurar el producto **"{producto.title}"**?.
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseRestaurarModal}>
+                        Cancelar
+                    </Button>
+                    <Button variant="success" onClick={handleRestaurar}>
+                        Restaurar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </Card>
+        
     );
 }
 

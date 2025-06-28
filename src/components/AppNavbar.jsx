@@ -1,12 +1,12 @@
 // Importamos los componentes de React Bootstrap que utilizaremos para la Navbar
-import { Navbar, Container, Nav, Badge } from 'react-bootstrap';
+import { Navbar, Container, Nav, Badge, Modal, Button } from 'react-bootstrap';
 // Importacion necesaria para el Logout y la navegación
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../store/userSlice';
 // logo para el logout
 import { FiLogOut } from 'react-icons/fi';
-import usersData from '../data/usersData'; // Importamos los datos de usuarios para simular la autenticación
+import { useState } from 'react';
 // Importamos NavLink para crear enlaces de navegación internos que eviten la recarga de la página
 import { NavLink } from 'react-router-dom';
 
@@ -15,10 +15,17 @@ function AppNavbar() {
     const navigate = useNavigate();
     // Obtenemos el usuario actual del estado global
     const user = useSelector(state => state.user);
+    const [showConfirmarCierre, setShowConfirmarCierreModal] = useState(false);
 
+    const handleShowConfirmarModal = (e) => {
+        e.stopPropagation(); // Evita el clic en el detalle
+        setShowConfirmarCierreModal(true);
+    };
+    const handleCloseConfirmarCierreModal = () => setShowConfirmarCierreModal(false);
 // Función para manejar el logout del usuario
     const handleLogout = () => {
         dispatch(logout());
+        handleCloseConfirmarCierreModal();
         navigate('/'); // Redirige al inicio de sesión
     };
     
@@ -94,7 +101,7 @@ function AppNavbar() {
                         <button
                             className="btn btn-outline-light d-flex align-items-center justify-content-center w-100 w-lg-auto"
                             style={{ fontWeight: 'bold', gap: '0.5em', minWidth: 120 }}
-                            onClick={handleLogout}
+                            onClick={handleShowConfirmarModal}
                         >
                             <FiLogOut size={20} />
                             <span className="d-none d-sm-inline">Cerrar sesión</span>
@@ -103,7 +110,25 @@ function AppNavbar() {
                     </Nav>
                 </Navbar.Collapse>
             </Container>
+            {/* Modal Cerrar Sesion */}
+            <Modal show={showConfirmarCierre} onHide={handleCloseConfirmarCierreModal} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirmar Cierre de sesion</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    ¿Estas seguro de que deseas cerrar sesion?.
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseConfirmarCierreModal}>
+                        Cancelar
+                    </Button>
+                    <Button variant="success" onClick={handleLogout}>
+                        Cerrar Sesion
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </Navbar>
+        
     );
 }
 

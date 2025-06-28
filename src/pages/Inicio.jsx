@@ -6,6 +6,7 @@ import { Button, Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { selectActiveProducts } from '../store/productosSlice';
 import { useEffect } from "react";
+import FondoLogin from '../assets/elegant-white-background-free-vector.jpg'; // Asegúrate de que la ruta sea correcta
 
 function Inicio() {
     const { loading, error } = useTraerProductos();
@@ -33,19 +34,20 @@ function Inicio() {
 
 
     return (
+        <div style={{backgroundImage: `url(${FondoLogin})`, backgroundSize: 'cover'}} >
         <Container className="mt-4 mb-5">
             <div className="text-center mb-4"> {/* Contenedor para centrar la imagen */}
                 <img
-                    src="/src/assets/Black White Minimalist Initials Monogram Jewelry Logo.png"
+                    src="/src/assets/logog24.png"
                     alt="Logo G24"
                     style={{ maxWidth: '250px', height: 'auto', display: 'block', margin: '0 auto' }} // Estilos inline para control de tamaño y centrado más robusto
                 />
             </div>
-            <h2 className="text-center mb-4">Página de Inicio de Productos</h2>
-            <p className="text-center mb-4">Aquí se listarán todas las tarjetas de productos.</p>
+            <h2 className="text-center mb-4">De Todo - Tu Pagina ONLINE</h2>
+            <p className="text-center mb-4">A continuacion, te presentamos nuestro catalogo de productos:</p>
             {/* Mostrar para  el admin */}
             {user.role == "ADMIN" && (
-                <Row className="justify-content-center mb-5">
+                <Row className="justify-content-center mb-2">
                     <Col xs={12} md={6} lg={4} className="text-center">
                         <Button
                             variant="primary"
@@ -92,6 +94,7 @@ function Inicio() {
                 )
             )}
         </Container>
+        </div>
     );
 }
 

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProduct, updateProduct } from '../store/productosSlice';
-import { Container, Form, Button, Row, Col } from 'react-bootstrap';
+import { Container, Form, Button, Row, Col, Modal} from 'react-bootstrap';
 import { useTraerProductos } from '../hooks/useTraerProductos';
 
 function FormularioProducto() {
@@ -11,8 +11,14 @@ function FormularioProducto() {
     const dispatch = useDispatch();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const products = useSelector(state => state.products);
+    const [showCrearCambiarProductoModal, setShowCrearCambiarProductoModal] = useState(false);
 
-    const {loading , error, categorias} = useTraerProductos();
+    const handleShowCrearCambiarModal = (e) => {
+        setShowCrearCambiarProductoModal(true);
+    };
+    const handleCloseCrearCambiarProductoModal = () => setShowCrearCambiarProductoModal(false);
+    
+    const {categorias} = useTraerProductos();
 
     const [formData, setFormData] = useState({
         title: '',
@@ -21,8 +27,8 @@ function FormularioProducto() {
         category: '',
         image: '',
         rating: {
-            rate: 0,
-            count: 0 // 'count' es el stock disponible
+        rate: 0,
+        count: 0 // 'count' es el stock disponible
         }
     });
 
@@ -106,29 +112,21 @@ function FormularioProducto() {
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-        if (!validateForm()) {
-            return;
-        }
-
-        setIsSubmitting(true); // Deshabilita el botón
-
+    const handleSubmit = () => { // Ya no necesita 'e' porque se llama desde el botón del modal
+        // La validación ya se hizo antes de mostrar el modal
+    
+        setIsSubmitting(true); // Activa el estado de "enviando" justo antes del dispatch
+    
         if (id) {
-            // Modo edición: despacha la acción updateProduct
             dispatch(updateProduct({ ...formData, id: Number(id) }));
-            alert('Producto actualizado exitosamente!');
-            navigate(`/detalle/${id}`); // Redirige al detalle del producto recien creado o editado
+            navigate(`/detalle/${id}`);
         } else {
-            // Modo creación: genera un nuevo ID y despacha addProduct
             const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
             dispatch(addProduct({ ...formData, id: newId }));
-            alert('Producto añadido Correctamente!');
-            navigate(`/detalle/${newId}`); // Redirige al detalle del producto recien creado o editado
+            navigate(`/detalle/${newId}`);
         }
-
-        setIsSubmitting(false); // Habilita el botón después de la acción
+        setIsSubmitting(false); // Desactiva el estado de "enviando"
+        handleCloseCrearCambiarProductoModal();
     };
 
     const formTitle = id ? 'Editar Producto' : 'Añadir Nuevo Producto';
@@ -138,7 +136,12 @@ function FormularioProducto() {
             <Row className="justify-content-center">
                 <Col xs={12} md={8} lg={7}>
                     <h2 className="text-center mb-4">{formTitle}</h2>
-                    <Form onSubmit={handleSubmit} className="p-4 border rounded shadow-sm">
+                    <Form onSubmit={(e) => {
+                        e.preventDefault(); // Previene el envío por defecto del formulario
+                        if (validateForm()) { // Solo muestra el modal si el formulario es válido
+                            handleShowCrearCambiarModal();
+                        }
+                    }} className="p-4 border rounded shadow-sm">
                         <Form.Group className="mb-3" controlId="formTitle">
                             <Form.Label>Nombre del Producto</Form.Label>
                             <Form.Control
@@ -216,7 +219,7 @@ function FormularioProducto() {
                             </Form.Control.Feedback>
                             {formData.image && !errors.image && (
                                 <div className="mt-2 text-center">
-                                    <img src={formData.image} alt="Vista previa" style={{ maxWidth: '100%', height: '150px', objectFit: 'contain', border: '1px solid #ddd', padding: '5px' }} />
+                                    <img src={formData.image} alt="Imagen no reconocida" style={{ maxWidth: '100%', height: '150px', objectFit: 'contain', border: '1px solid #ddd', padding: '5px' }} />
                                 </div>
                             )}
                         </Form.Group>
@@ -245,6 +248,23 @@ function FormularioProducto() {
                     </Form>
                 </Col>
             </Row>
+            {/* Modal Crear Nuevo */}
+            <Modal show={showCrearCambiarProductoModal} onHide={handleCloseCrearCambiarProductoModal} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>{id ? 'Confirmar Guardar Cambios' : 'Confirmar Añadir Producto'}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {id ? '¿Estás seguro que deseas guardar estos cambios?' : '¿Estás seguro que deseas añadir este producto?'}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseCrearCambiarProductoModal}>
+                        Cancelar
+                    </Button>
+                    <Button variant="success" onClick={handleSubmit} disabled={isSubmitting}>
+                        {isSubmitting ? 'Guardando...' : (id ? 'Guardar Cambios' : 'Añadir Producto')}
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </Container>
     );
 }
