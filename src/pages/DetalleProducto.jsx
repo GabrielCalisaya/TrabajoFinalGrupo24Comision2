@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Container, Card, Button, Row, Col, Badge } from 'react-bootstrap';
 import { agregarFavorito, quitarFavorito } from '../store/favoritosSlice';
 import { FaHeart, FaArrowLeft} from 'react-icons/fa';
-import { useEffect } from 'react';
+import { useEffect, useCallback} from 'react';
 
 function DetalleProducto() {
     // Obtiene el ID del producto de los parametros de la URL
@@ -31,13 +31,14 @@ function DetalleProducto() {
     }
 
     // Funcion para alternar el estado de favorito de un producto
-    const toggleFavorito = () => {
+    const toggleFavorito = useCallback((e) => {
+        e.stopPropagation();
         if (esFavorito) {
             dispatch(quitarFavorito({ usuario: user.usuario, idProducto: producto.id }));
         } else {
             dispatch(agregarFavorito({ usuario: user.usuario, idProducto: producto.id }));
         }
-    };
+    }, [dispatch, esFavorito, user.usuario, producto.id]);
 
     // Funcion para navegar al formulario de edición del producto actual
     const handleEditarProducto = () => {

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Card, Button, Modal} from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,14 +19,15 @@ function ProductoCarta({ producto, papelera }) {
         navigate(`/detalle/${producto.id} `);
     };
 
-    const toggleFavorito = (e) => {
+
+    const toggleFavorito = useCallback((e) => {
         e.stopPropagation(); // Evita que el clic en el botón de favorito active el detalle
         if (esFavorito) {
             dispatch(quitarFavorito({ usuario: user.usuario, idProducto:producto.id }));
         } else {
             dispatch(agregarFavorito({ usuario: user.usuario, idProducto:producto.id }));
         }
-        };
+        }, [dispatch, esFavorito, user.usuario, producto.id]);
     const handleShowRestaurarModal = (e) => {
             e.stopPropagation(); // Evita el clic en el detalle
             setShowRestaurarModal(true);
