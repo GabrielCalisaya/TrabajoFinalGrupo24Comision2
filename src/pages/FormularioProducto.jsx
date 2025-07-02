@@ -112,8 +112,8 @@ function FormularioProducto() {
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = () => { // Ya no necesita 'e' porque se llama desde el botón del modal
-        // La validación ya se hizo antes de mostrar el modal
+    const handleSubmit = () => { // Ya no necesita 'e' porque se llama desde el boton del modal
+        // La validacion ya se hizo antes de mostrar el modal
     
         setIsSubmitting(true); // Activa el estado de "enviando" justo antes del dispatch
     
@@ -137,8 +137,8 @@ function FormularioProducto() {
                 <Col xs={12} md={8} lg={7}>
                     <h2 className="text-center mb-4">{formTitle}</h2>
                     <Form onSubmit={(e) => {
-                        e.preventDefault(); // Previene el envío por defecto del formulario
-                        if (validateForm()) { // Solo muestra el modal si el formulario es válido
+                        e.preventDefault(); // Previene el envio por defecto del formulario
+                        if (validateForm()) { // Solo muestra el modal si el formulario es valido
                             handleShowCrearCambiarModal();
                         }
                     }} className="p-4 border rounded shadow-sm">

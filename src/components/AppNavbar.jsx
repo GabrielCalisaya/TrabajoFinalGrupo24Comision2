@@ -7,7 +7,7 @@ import { logout } from '../store/userSlice';
 // logo para el logout
 import { FiLogOut } from 'react-icons/fi';
 import { useState } from 'react';
-// Importamos NavLink para crear enlaces de navegación internos que eviten la recarga de la página
+// Importamos NavLink para crear enlaces de navegacion internos que eviten la recarga de la pagina
 import { NavLink } from 'react-router-dom';
 
 function AppNavbar() {
@@ -26,13 +26,13 @@ function AppNavbar() {
     const handleLogout = () => {
         dispatch(logout());
         handleCloseConfirmarCierreModal();
-        navigate('/'); // Redirige al inicio de sesión
+        navigate('/'); // Redirige al inicio de sesion
     };
     
     return (
         <Navbar bg="dark" variant="dark" expand="lg">
             <Container fluid>
-                {/* Navbar.Brand es logotipo de la app de nuestra barra de navegación. El NavLink es para que al clickear, el usuario sea redirigido a la página principal */}
+                {/* Navbar.Brand es logotipo de la app de nuestra barra de navegacion. El NavLink es para que al clickear, el usuario sea redirigido a la pagina principal */}
                 <Navbar.Brand as={NavLink} to="/">
                     <img
                         src="/src/assets/Black White Minimalist Initials Monogram Jewelry Logo.png"
@@ -42,7 +42,7 @@ function AppNavbar() {
                     De Todo - Tu Tienda Online
                 </Navbar.Brand>
 
-                {/* Navbar.Toggle es el botón de "hamburguesa" que aparece en pantallas pequeñas para desplegar/ocultar el menú de navegación. 'aria-controls="basic-navbar-nav"' enlaza este botón con el contenido que controla. */}
+                {/* Navbar.Toggle es el boton de "hamburguesa" que aparece en pantallas pequeñas para desplegar/ocultar el menu de navegacion. 'aria-controls="basic-navbar-nav"' enlaza este boton con el contenido que controla. */}
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
                 {/* Navbar.Collapse es el contenedor del contenido que se colapsa en pantallas pequeñas. 'id="basic-navbar-nav"' lo asocia con el Navbar.Toggle. */}
@@ -54,7 +54,7 @@ function AppNavbar() {
                             Inicio
                         </Nav.Link>
 
-                        {/* NavLink para la página de "Favoritos" */}
+                        {/* NavLink para la pagina de "Favoritos" */}
                         {user.role ==='ADMIN' && (
                         <Nav.Link as={NavLink} to="/favoritos">
                             Favoritos
@@ -81,7 +81,7 @@ function AppNavbar() {
                             Acerca de
                         </Nav.Link>
                         </Nav>
-                        {/* Botón de Logout con especificacion de sesion actual y rol */}
+                        {/* Boton de Logout con especificacion de sesion actual y rol */}
                     <Nav className="ms-auto align-items-center flex-column flex-lg-row">
                         <span className="mb-2 mb-lg-0 me-0 me-lg-3 d-flex align-items-center justify-content-center w-100 w-lg-auto">
                             <Badge
@@ -131,6 +131,4 @@ function AppNavbar() {
         
     );
 }
-
-// Falta terminar de estilizar el navbar
 export default AppNavbar;

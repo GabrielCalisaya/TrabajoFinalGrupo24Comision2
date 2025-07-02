@@ -2,7 +2,7 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // Usa localStorage por defecto
-// Trae los reducers que vas a usar en el store
+// traemos los reducers que vamos a usar en el store
 import productsReducer from "./productosSlice";
 import favoritosReducer from "./favoritosSlice";
 import userReducer from "./userSlice";
@@ -38,5 +38,5 @@ export const store = configureStore({
         }),
 });
 
-// Crea el persistor, lo vas a usar con el Provider de redux-persist
+// Crea el persistor, que vamos a usar con el Provider de redux-persist
 export const persistor = persistStore(store);

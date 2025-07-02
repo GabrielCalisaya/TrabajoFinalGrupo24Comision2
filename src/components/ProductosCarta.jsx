@@ -23,9 +23,9 @@ function ProductoCarta({ producto, papelera }) {
         e.stopPropagation(); // Evita que el clic en el botón de favorito active el detalle
         if (esFavorito) {
             dispatch(quitarFavorito({ usuario: user.usuario, idProducto:producto.id }));
-          } else {
+        } else {
             dispatch(agregarFavorito({ usuario: user.usuario, idProducto:producto.id }));
-          }
+        }
         };
     const handleShowRestaurarModal = (e) => {
             e.stopPropagation(); // Evita el clic en el detalle
@@ -36,7 +36,7 @@ function ProductoCarta({ producto, papelera }) {
         setShowDeleteModal(true);
     };
 
-    // Función para cerrar el modal de confirmación
+    // Funcion para cerrar el modal de confirmacion
     const handleCloseDeleteModal = () => setShowDeleteModal(false);
     const handleCloseRestaurarModal = () => setShowRestaurarModal(false);
 
@@ -49,6 +49,7 @@ function ProductoCarta({ producto, papelera }) {
         dispatch(restoreProduct({ id: producto.id }));
         handleCloseRestaurarModal();
     }
+    // Evita que un producto inactivo se muestre si no es de la papelera
     if (producto.estado === 'inactivo' && !papelera) {
         return null;
     }
@@ -140,7 +141,6 @@ function ProductoCarta({ producto, papelera }) {
                 </Modal.Footer>
             </Modal>
         </Card>
-        
     );
 }
 

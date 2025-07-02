@@ -6,14 +6,14 @@ import { Button, Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { selectActiveProducts } from '../store/productosSlice';
 import { useEffect } from "react";
-import FondoLogin from '../assets/elegant-white-background-free-vector.jpg'; // Asegúrate de que la ruta sea correcta
+import FondoInicio from '../assets/elegant-white-background-free-vector.jpg';
 
 function Inicio() {
     const { loading, error } = useTraerProductos();
     const products = useSelector(selectActiveProducts);
     const navigate = useNavigate();
     const user = useSelector(state => state.user);
-    // valida que si el usuario ingresa a esta ruta manualmente, lo redirige al login en caso de no estar autenticado(esto deberia guardarse en el localstorage)
+    // valida que si el usuario ingresa a esta ruta manualmente, lo redirige al login en caso de no estar autenticado
     useEffect(() => {
         if (!user.isAuthenticated) {
             navigate("/")
@@ -34,7 +34,7 @@ function Inicio() {
 
 
     return (
-        <div style={{backgroundImage: `url(${FondoLogin})`, backgroundSize: 'cover'}} >
+        <div style={{backgroundImage: `url(${FondoInicio})`, backgroundSize: 'cover'}} >
         <Container className="mt-4 mb-5">
             <div className="text-center mb-4"> {/* Contenedor para centrar la imagen */}
                 <img
@@ -76,7 +76,7 @@ function Inicio() {
                     )}
 
             {loading ? (
-                // Muestra el spinner mientras los productos están cargando
+                // Muestra el spinner mientras los productos estan cargando
                 <SpinnerLoad open={loading} />
             ) : (
                 // Si no hay productos y no está cargando, muestra un mensaje

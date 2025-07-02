@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from '../store/userSlice';
 import { Container, Row, Col, Form, Button, Card, Alert, InputGroup } from 'react-bootstrap';
 import { FaUser, FaLock } from 'react-icons/fa';
-import FondoLogin from '../assets/elegant-white-background-free-vector.jpg'; // Asegúrate de que la ruta sea correcta
+import FondoLogin from '../assets/elegant-white-background-free-vector.jpg';
 
 export const InicioSesion = () => {
     const navigate = useNavigate()
@@ -13,7 +13,6 @@ export const InicioSesion = () => {
     const [usuario, setUsuario] = useState('');
     const [password, setPassword] = useState('');
 
-    //Obtener los estados relevanted de Redux
     const isAuthenticated = useSelector(state => state.user.isAuthenticated); // 
 
     // Determinamos la ruta a la cual nos va a redirigir despues del login
@@ -24,11 +23,11 @@ export const InicioSesion = () => {
         if (isAuthenticated) {
             navigate(from, { replace: true });
         }
-    }, [isAuthenticated, navigate, from]); // Dependencias del useEffect
+    }, [isAuthenticated, navigate, from]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // solo envia email y password.
+        // solo envia usuario y password.
         dispatch(setUser({ usuario, password }));
         // Limpia los campos del formulario después del intento
         setUsuario('');
