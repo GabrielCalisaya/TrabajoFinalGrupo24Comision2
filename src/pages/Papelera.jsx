@@ -1,10 +1,15 @@
 import { useSelector } from 'react-redux';
 import { Row, Col, Container, Alert } from 'react-bootstrap';
 import ProductoCarta from '../components/ProductosCarta';
+import { useMemo } from 'react';
 
 function Papelera() {
   const products = useSelector(state => state.products);
-  const productosEnPapelera = products.filter(product => product.estado === 'inactivo');
+
+  const productosEnPapelera = useMemo(() =>
+    products.filter(product => product.estado === 'inactivo')
+    , [products]
+  );
 
   return (
     <Container style={{ marginTop: '3rem', marginBottom: '3rem', minHeight: '70vh' }}>
@@ -20,7 +25,7 @@ function Papelera() {
         <Row xs={1} sm={2} md={3} lg={4} className="g-4">
           {productosEnPapelera.map(producto => (
             <Col key={producto.id}>
-                {/* renderizamos los productos en papelera */}
+              {/* renderizamos los productos en papelera */}
               <ProductoCarta producto={producto} papelera={true} />
             </Col>
           ))}
