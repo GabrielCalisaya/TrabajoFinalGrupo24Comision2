@@ -8,7 +8,7 @@ function Favoritos() {
   const favoritosPorUsuario = useSelector(state => state.favoritos);
   const productos = useSelector(state => state.products);
 
-  // Obtenemos la lista de favoritos del usuario actual, o array vacío si no hay
+  // Obtenemos la lista de favoritos del usuario actual, o array vacio si no hay
   const favoritos = favoritosPorUsuario[user.usuario] || [];
 
   // Filtramos los productos que están en la lista de favoritos del usuario

@@ -1,6 +1,6 @@
 import { Spinner } from "react-bootstrap"
 
-//Esta línea importa el componente Spinner del paquete react-bootstrap. react-bootstrap
+//Esta linea importa el componente Spinner del paquete react-bootstrap. react-bootstrap
 
 export const SpinnerLoad = ({ open }) => { //Define un componente funcional de React llamado SpinnerLoad
     //es la desestructuracion de props. Indica que este componente espera recibir una prop llamada open

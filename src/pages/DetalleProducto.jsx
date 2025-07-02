@@ -1,15 +1,12 @@
-// Importación de hooks de React Router DOM para acceder a parámetros de URL y para la navegación
 import { useParams, useNavigate } from 'react-router-dom';
-// Importación de hooks de Redux para acceder al estado global y despachar acciones
 import { useSelector, useDispatch } from 'react-redux';
 import { Container, Card, Button, Row, Col, Badge } from 'react-bootstrap';
-// Importación de las acciones para agregar y quitar productos de favoritos
 import { agregarFavorito, quitarFavorito } from '../store/favoritosSlice';
 import { FaHeart, FaArrowLeft} from 'react-icons/fa';
 import { useEffect } from 'react';
 
 function DetalleProducto() {
-    // Obtiene el ID del producto de los parámetros de la URL
+    // Obtiene el ID del producto de los parametros de la URL
     const { id } = useParams();
     const dispatch = useDispatch(); // Inicializa useDispatch para despachar acciones
     const navigate = useNavigate(); // Inicializa useNavigate para la navegación programática
@@ -18,7 +15,7 @@ function DetalleProducto() {
     const productos = useSelector(state => state.products);
     const favoritos = useSelector(state => state.favoritos[user.usuario] || []);
 
-    // Busca el producto específico por su ID en la lista de productos
+    // Busca el producto especifico por su ID en la lista de productos
     const producto = productos.find(p => p.id === Number(id));
     // Verifica si el producto actual está marcado como favorito
     const esFavorito = favoritos.includes(Number(id));
@@ -33,7 +30,7 @@ function DetalleProducto() {
         return <Container className="mt-5"><p>Producto no encontrado.</p></Container>;
     }
 
-    // Función para alternar el estado de favorito de un producto
+    // Funcion para alternar el estado de favorito de un producto
     const toggleFavorito = () => {
         if (esFavorito) {
             dispatch(quitarFavorito({ usuario: user.usuario, idProducto: producto.id }));
@@ -42,7 +39,7 @@ function DetalleProducto() {
         }
     };
 
-    // Función para navegar al formulario de edición del producto actual
+    // Funcion para navegar al formulario de edición del producto actual
     const handleEditarProducto = () => {
         navigate(`/formulario/${producto.id}`); // Redirige a la ruta de edición con el ID del producto
     };
@@ -88,7 +85,7 @@ function DetalleProducto() {
                                 </Button>
                             </div>
                         )}
-                            {/*puse "as='div'" para que el texto no se vea como un párrafo y se pueda usar h5 (tiraba un error que no afectaba el funcionamiento pero si figuraba en consola)*/}
+                            {/*puse "as='div'" para que el texto no se vea como un parrafo */}
                             <Card.Text as="div">
                                 <h5>
                                     <Badge bg="success" className="me-2">
@@ -108,7 +105,7 @@ function DetalleProducto() {
                                     <p className="mt-2 text-dark">{producto.description}</p>
                                 </div>
                             </Card.Text>
-                            {/* Boton para navegar al formulario de edición del producto */}
+                            {/* Boton para navegar al formulario de edicion del producto */}
                             {user.role == "ADMIN" && (
                                 <div className="d-grid gap-2">
                                     <Button

@@ -5,7 +5,7 @@ const RutaAdmin = ({ children }) => {
   const { isAuthenticated, role } = useSelector(state => state.user);
 
   if (!isAuthenticated || role !== "ADMIN") {
-    //muestrapagina de acceso denegado
+    //muestra pagina de acceso denegado
     return <AccesoDenegado />;
   }
 
